@@ -22,7 +22,7 @@ LISTE_MALADIES = [
 ]
 
 NB_PAGES_PAR_MALADIE = 30
-NOM_FICHIER_SORTIE = "FINAL_DATASET_CANCER.csv"
+NOM_FICHIER_SORTIE = "data/scraping/FINAL_DATASET_CANCER.csv"
 
 # ==========================================
 # 🧠 LE ROBOT BLINDÉ
