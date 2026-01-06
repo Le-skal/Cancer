@@ -1,4 +1,4 @@
-Cancer,Trial_ID,Title,Sponsor,Status,URL
+cancer,trial_id,title,sponsor,status,url
 Lung Cancer,NCT05817110,Validating Artificial Intelligence Effectiveness Defined Lung Nodule Malignancy Score in Patients With Pulmonary Nodule.,Information provided by AstraZeneca (Responsible Party),Active,https://clinicaltrials.gov/study/NCT05817110?cond=Lung%20Cancer&viewType=Card&page=1&rank=1
 Lung Cancer,NCT00188656,Computed Tomography (CT) in Head and Neck Patients,"Information provided by University Health Network, Toronto",Terminated,https://clinicaltrials.gov/study/NCT00188656?cond=Lung%20Cancer&viewType=Card&page=1&rank=2
 Lung Cancer,NCT07117539,Impact of Different Lung Isolation Devices on Pharyngolaryngeal Injuries After Pulmonary Resection,"Information provided by Tingting Li, Shanghai Chest Hospital (Responsible Party)",Recruiting,https://clinicaltrials.gov/study/NCT07117539?cond=Lung%20Cancer&viewType=Card&page=1&rank=3
