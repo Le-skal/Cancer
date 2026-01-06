@@ -230,9 +230,92 @@ def run_cleaning():
 
 
 # ==========================================
+# 📊 ÉTAPE 3 : SUPABASE
+# ==========================================
+def run_supabase():
+    """Lance le script Supabase"""
+    Logger.step(3, "Configuration et import Supabase")
+
+    try:
+        Logger.info("Démarrage du script Supabase...")
+        time.sleep(0.5)
+
+        import subprocess
+
+        result = subprocess.run(
+            [sys.executable, "scripts/4_Supabase.py"], capture_output=False, text=True
+        )
+
+        if result.returncode == 0:
+            Logger.success("Script Supabase terminé!")
+            return True
+        else:
+            Logger.error(f"Erreur lors du script Supabase (code: {result.returncode})")
+            return False
+
+    except Exception as e:
+        Logger.error(f"Erreur lors du script Supabase: {e}")
+        import traceback
+
+        traceback.print_exc()
+        return False
+
+
+# ==========================================
+# 📊 ÉTAPE 4 : VISUALISATION
+# ==========================================
+def run_visualization():
+    """Lance le notebook de visualisation"""
+    Logger.step(4, "Génération des visualisations")
+
+    try:
+        Logger.info("Exécution du notebook de visualisation...")
+        time.sleep(0.5)
+
+        import subprocess
+
+        # Essayer d'exécuter le notebook avec jupyter
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "jupyter",
+                "nbconvert",
+                "--to",
+                "notebook",
+                "--execute",
+                "--inplace",
+                "scripts/5_Visualisation.ipynb",
+            ],
+            capture_output=True,
+            text=True,
+        )
+
+        if result.returncode == 0:
+            Logger.success("Visualisations générées avec succès!")
+            Logger.info(
+                "Vous pouvez ouvrir scripts/5_Visualisation.ipynb pour voir les résultats"
+            )
+            return True
+        else:
+            Logger.warning("Impossible d'exécuter automatiquement le notebook")
+            Logger.info(
+                "Veuillez ouvrir scripts/5_Visualisation.ipynb manuellement avec Jupyter"
+            )
+            return False
+
+    except Exception as e:
+        Logger.warning(f"Impossible d'exécuter le notebook automatiquement: {e}")
+        Logger.info(
+            "Veuillez ouvrir scripts/5_Visualisation.ipynb manuellement avec Jupyter"
+        )
+        return False
+
+
+# ==========================================
 # 📈 RÉSUMÉ FINAL
 # ==========================================
-def print_summary(scraping_ok, cleaning_ok):
+def print_summary(scraping_ok, cleaning_ok, supabase_ok, visualization_ok):
     """Affiche un résumé du pipeline"""
     Logger.divider()
     Logger.header("RÉSUMÉ DU PIPELINE")
@@ -243,12 +326,19 @@ def print_summary(scraping_ok, cleaning_ok):
     print(
         f"  {Logger.BOLD}Nettoyage des données{Logger.END}     : {Logger.GREEN + '✅ SUCCÈS' + Logger.END if cleaning_ok else Logger.RED + '❌ ERREUR' + Logger.END}"
     )
+    print(
+        f"  {Logger.BOLD}Configuration Supabase{Logger.END}    : {Logger.GREEN + '✅ SUCCÈS' + Logger.END if supabase_ok else Logger.RED + '❌ ERREUR' + Logger.END}"
+    )
+    print(
+        f"  {Logger.BOLD}Visualisations{Logger.END}            : {Logger.GREEN + '✅ SUCCÈS' + Logger.END if visualization_ok else Logger.RED + '❌ ERREUR' + Logger.END}"
+    )
 
-    if scraping_ok and cleaning_ok:
+    if scraping_ok and cleaning_ok and supabase_ok and visualization_ok:
         Logger.success(f"\n🎉 PIPELINE COMPLET AVEC SUCCÈS!")
         print(f"\n{Logger.BOLD}Les fichiers sont prêts dans:{Logger.END}")
         print(f"  📁 data/ → Données brutes")
         print(f"  📁 data_clean/ → Données nettoyées et traitées")
+        print(f"  📁 scripts/5_Visualisation.ipynb → Visualisations")
     else:
         Logger.error("\n⚠️  Le pipeline a rencontré des erreurs")
 
@@ -284,8 +374,16 @@ def main():
     cleaning_ok = run_cleaning()
     Logger.divider()
 
+    # Étape 3: Supabase
+    supabase_ok = run_supabase()
+    Logger.divider()
+
+    # Étape 4: Visualisation
+    visualization_ok = run_visualization()
+    Logger.divider()
+
     # Résumé
-    print_summary(scraping_ok, cleaning_ok)
+    print_summary(scraping_ok, cleaning_ok, supabase_ok, visualization_ok)
 
     # Temps d'exécution
     elapsed_time = time.time() - start_time
